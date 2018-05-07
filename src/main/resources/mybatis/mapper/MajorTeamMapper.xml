@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="MajorTeamMapper">
+	<resultMap id="majorTeam" type="com.sms.entity.MajorTeam">
+		<id column="major_class_id" property="majorClassId" jdbcType="INTEGER" />
+		<result column="major_id" property="majorId" jdbcType="INTEGER" />
+		<result column="class_id" property="classId" jdbcType="INTEGER" />
+		<result column="header_monitor" property="headerMonitor" />
+
+	</resultMap>
+	<sql id="Base_Column_List">
+		major_class_id, major_id, class_id
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="majorTeam"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from major_team
+		where major_class_id = #{majorClassId}
+	</select>
+	<!-- 据majorClassId删除班级信息 -->
+	<delete id="deleteByMajorClassId" parameterType="pd">
+		delete from major_team
+		where major_class_id = #{majorClassId}
+	</delete>
+	<insert id="insertSelective" parameterType="com.sms.entity.MajorTeam">
+		insert into major_team
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="majorClassId != null">
+				major_class_id,
+			</if>
+			<if test="majorId != null">
+				major_id,
+			</if>
+			<if test="classId != null">
+				class_id,
+			</if>
+			<if test="headerMonitor != null">
+				header_monitor,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="majorClassId != null">
+				0,
+			</if>
+			<if test="majorId != null">
+				#{majorId},
+			</if>
+			<if test="classId != null">
+				#{classId},
+			</if>
+			<if test="headerMonitor != null">
+				#{headerMonitor},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKey" parameterType="com.sms.entity.MajorTeam">
+		update major_team
+		set major_id = #{majorId,jdbcType=INTEGER},
+		class_id = #{classId,jdbcType=INTEGER}
+		where major_class_id = #{majorClassId,jdbcType=INTEGER}
+	</update>
+
+	<!-- 通过专业名验证专业 -->
+	<select id="validateMajorTeam" parameterType="pd" resultType="MajorTeam">
+		select mt.major_class_id majorClassId from major m,major_team mt, team
+		t
+		where
+		mt.major_id = m.major_id and
+		mt.class_id = t.class_id and
+		m.major_id = #{majorId}
+		and
+		t.grade = #{grade} and
+		t.class_number = #{classNumber}
+	</select>
+
+	<!-- 条件检索班级 -->
+	<select id="listPageTeam" parameterType="page" resultType="pd"
+		useCache="false">
+		select t.class_id classId,
+		m.department department,
+		m.major_name
+		majorName,
+		t.grade grade,
+		t.class_number classNumber,
+		mt.major_class_id
+		majorClassId
+		from team t join major_team mt on t.class_id = mt.class_id
+		join major m on mt.major_id = m.major_id
+		where 1 = 1
+		<if test="pd.keyWord != null and pd.keyWord != ''"><!-- 关键词检索 -->
+			and m.department like concat(concat('%', #{pd.keyWord}),'%')
+		</if>
+		<if test="pd.majorName != null and pd.majorName != ''"><!-- 专业检索 -->
+			and m.major_name like concat(concat('%', #{pd.majorName}),'%')
+		</if>
+		<if test="pd.grade != null and pd.grade != ''"><!-- 数据有效性检索 -->
+			and t.grade like concat(concat('%', #{pd.grade}),'%')
+		</if>
+		order by m.major_id asc
+	</select>
+	<!-- 据majorClassId查询班级信息 -->
+	<select id="findByMajorClassId" parameterType="pd" resultType="pd">
+		select t.class_id classId, class_number classNumber, grade grade,
+		m.major_id majorId, mt.header_monitor headerMonitor
+		from team t inner
+		join major_team mt
+		on t.class_id = mt.class_id
+		inner join major m
+		on m.major_id = mt.major_id
+		where mt.major_class_id = #{majorClassId}
+	</select>
+	<!-- 保存班级信息 -->
+	<update id="saveMajorTeam" parameterType="pd">
+		update major_team
+		<set>
+			<if test="majorId != null">
+				major_id = #{majorId,jdbcType=INTEGER},
+			</if>
+			<if test="classId != null">
+				class_id = #{classId,jdbcType=INTEGER},
+			</if>
+			<if test="headerMonitor != null">
+				header_monitor = #{headerMonitor},
+			</if>
+		</set>
+		where major_class_id = #{majorClassId,jdbcType=INTEGER}
+	</update>
+	<!-- 通过major_id和class_id验证班级 -->
+	<select id="validateByClassIdAndMajorId" resultType="Integer">
+		 select major_class_id from major_team where class_id= #{classId} and major_id= #{majorId}
+	</select>
+</mapper>

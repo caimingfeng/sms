@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="CourseSelectMapper" >
+  <resultMap id="BaseResultMap" type="com.sms.entity.CourseSelect" >
+    <id column="courses_select_id" property="coursesSelectId" jdbcType="INTEGER" />
+    <result column="cno" property="cno" jdbcType="VARCHAR" />
+    <result column="tno" property="tno" jdbcType="VARCHAR" />
+    <result column="tea_name" property="teaName" jdbcType="VARCHAR" />
+    <result column="bz" property="bz" jdbcType="VARCHAR" />
+    <result column="courses_message_id" property="coursesMessageId" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="creation_date" property="creationDate" jdbcType="TIMESTAMP" />
+    <result column="last_update_by" property="lastUpdateBy" jdbcType="VARCHAR" />
+    <result column="last_update_date" property="lastUpdateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    courses_select_id, cno, tno, tea_name, bz, courses_message_id, state, created_by, 
+    creation_date, last_update_by, last_update_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from courses_select
+    where courses_select_id = #{coursesSelectId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from courses_select
+    where courses_select_id = #{coursesSelectId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sms.entity.CourseSelect" >
+    insert into courses_select (courses_select_id, cno, tno, 
+      tea_name, bz, courses_message_id, 
+      state, created_by, creation_date, 
+      last_update_by, last_update_date)
+    values (#{coursesSelectId,jdbcType=INTEGER}, #{cno,jdbcType=VARCHAR}, #{tno,jdbcType=VARCHAR}, 
+      #{teaName,jdbcType=VARCHAR}, #{bz,jdbcType=VARCHAR}, #{coursesMessageId,jdbcType=INTEGER}, 
+      #{state,jdbcType=INTEGER}, #{createdBy,jdbcType=VARCHAR}, #{creationDate,jdbcType=TIMESTAMP}, 
+      #{lastUpdateBy,jdbcType=VARCHAR}, #{lastUpdateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sms.entity.CourseSelect" >
+    insert into courses_select
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="coursesSelectId != null" >
+        courses_select_id,
+      </if>
+      <if test="cno != null" >
+        cno,
+      </if>
+      <if test="tno != null" >
+        tno,
+      </if>
+      <if test="teaName != null" >
+        tea_name,
+      </if>
+      <if test="bz != null" >
+        bz,
+      </if>
+      <if test="coursesMessageId != null" >
+        courses_message_id,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+      <if test="creationDate != null" >
+        creation_date,
+      </if>
+      <if test="lastUpdateBy != null" >
+        last_update_by,
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="coursesSelectId != null" >
+        #{coursesSelectId,jdbcType=INTEGER},
+      </if>
+      <if test="cno != null" >
+        #{cno,jdbcType=VARCHAR},
+      </if>
+      <if test="tno != null" >
+        #{tno,jdbcType=VARCHAR},
+      </if>
+      <if test="teaName != null" >
+        #{teaName,jdbcType=VARCHAR},
+      </if>
+      <if test="bz != null" >
+        #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="coursesMessageId != null" >
+        #{coursesMessageId,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="creationDate != null" >
+        #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateBy != null" >
+        #{lastUpdateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null" >
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sms.entity.CourseSelect" >
+    update courses_select
+    <set >
+      <if test="cno != null" >
+        cno = #{cno,jdbcType=VARCHAR},
+      </if>
+      <if test="tno != null" >
+        tno = #{tno,jdbcType=VARCHAR},
+      </if>
+      <if test="teaName != null" >
+        tea_name = #{teaName,jdbcType=VARCHAR},
+      </if>
+      <if test="bz != null" >
+        bz = #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="coursesMessageId != null" >
+        courses_message_id = #{coursesMessageId,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="creationDate != null" >
+        creation_date = #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateBy != null" >
+        last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where courses_select_id = #{coursesSelectId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sms.entity.CourseSelect" >
+    update courses_select
+    set cno = #{cno,jdbcType=VARCHAR},
+      tno = #{tno,jdbcType=VARCHAR},
+      tea_name = #{teaName,jdbcType=VARCHAR},
+      bz = #{bz,jdbcType=VARCHAR},
+      courses_message_id = #{coursesMessageId,jdbcType=INTEGER},
+      state = #{state,jdbcType=INTEGER},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      creation_date = #{creationDate,jdbcType=TIMESTAMP},
+      last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+      last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP}
+    where courses_select_id = #{coursesSelectId,jdbcType=INTEGER}
+  </update>
+</mapper>

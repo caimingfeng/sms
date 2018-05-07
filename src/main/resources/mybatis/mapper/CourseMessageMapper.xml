@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="CourseMessageMapper" >
+  <resultMap id="courseMessage" type="com.sms.entity.CourseMessage" >
+    <id column="courses_message_id" property="coursesMessageId" jdbcType="INTEGER" />
+    <result column="teaching_class" property="teachingClass" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="week" property="week" jdbcType="INTEGER" />
+    <result column="week_num" property="weekNum" jdbcType="INTEGER" />
+    <result column="section" property="section" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="limit_select" property="limitSelect" jdbcType="INTEGER" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="creation_date" property="creationDate" jdbcType="TIMESTAMP" />
+    <result column="last_update_by" property="lastUpdateBy" jdbcType="VARCHAR" />
+    <result column="last_update_date" property="lastUpdateDate" jdbcType="TIMESTAMP" />
+    <result column="bz" property="bz" jdbcType="VARCHAR" />
+    <result column="cno" property="cno" jdbcType="VARCHAR" />
+    <result column="tea_id" property="teaId"/>
+    <result column="tea_name" property="teaName"/>
+    <result column="parentid" property="parentId"/>
+    <result column="score_type" property="scoreType"/>
+    <result column="regular_per" property="regularPer"/>
+    <result column="exam_per" property="examPer"/>
+     <result column="edit_score" property="editScore"/>
+    <association property="course" column="cno" select="CourseMapper.findByCno"></association>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    courses_message_id, type, week, week_num, section, content, 
+    limit_select
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="courseMessage" parameterType="pd" >
+    select 
+    <include refid="Base_Column_List" />
+    from courses_message
+    where courses_message_id = #{coursesMessageId}
+  </select>
+  <select id="selectById" resultMap="courseMessage" parameterType="pd" >
+    select *
+    from courses_message
+    where courses_message_id = #{coursesMessageId}
+  </select>
+ 
+<!-- 开班列表 -->
+	<select id="listPageCM" parameterType="page" resultMap="courseMessage" useCache="false">
+		select  teaching_class,type,limit_select,t.tea_name,cm.cno,cm.tea_id,cm.courses_message_id
+		from courses_message cm join teacher t on cm.tea_id = t.tea_id join course c on cm.cno = c.cno
+		where parentid='#' 
+		<if test="pd.keyWord != null and pd.keyWord != ''"><!-- 关键词检索 -->
+			and cm.teaching_class like concat(concat('%', #{pd.keyWord}),'%')
+			</if>
+			<if test="pd.courseName != null and pd.courseName != ''" >
+			and c.course_name like concat(concat('%', #{pd.courseName}),'%')
+			</if>
+			<if test="pd.teaName != null and pd.teaName != ''">
+			and t.tea_name like concat(concat('%', #{pd.teaName}),'%')
+			</if>
+		order by courses_message_id asc
+	</select>
+	
+	<delete id="deleteById" parameterType="pd" >
+	    delete from courses_message
+	    where courses_message_id = #{coursesMessageId} or parentId = #{coursesMessageId}
+  	</delete>
+  	
+  	<update id="editClassById" parameterType="pd" >
+    update courses_message
+    <set >
+      <if test='teachingClass != null and teachingClass != ""' >
+        teaching_class = #{teachingClass},
+      </if>
+      <if test='cno != null and cno != ""' >
+        cno = #{cno},
+      </if>
+      <if test='type != null and type != ""' >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test='week != null and week != ""' >
+        week = #{week},
+      </if>
+      <if test='weekNum != null and weekNum != ""' >
+        week_num = #{weekNum},
+      </if>
+      <if test='section != null and section !=""' >
+        section = #{section,jdbcType=VARCHAR},
+      </if>
+      <if test='address != null and address !=""' >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test='content != null and content != ""' >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test='limitSelect != null and limitSelect != ""' >
+        limit_select = #{limitSelect},
+      </if>
+      <if test='lastUpdateBy != null and lastUpdateBy != ""' >
+        last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+      </if>
+      <if test='lastUpdateDate != null and lastUpdateDate != ""' >
+        last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test='bz != null and bz != ""' >
+        bz = #{bz,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where  courses_message_id = #{coursesMessageId}
+  </update>
+   <!-- 验证班级信息是否存在 -->
+   <select id="findByTTC" parameterType="pd" resultType="Integer" useCache="false">
+		select  count(courses_message_id)
+		from courses_message
+		where cno = #{cno} and tea_id = #{teaId} and teaching_class = #{teachingClass}
+	</select>
+  
+  <!-- 插入开班信息 -->
+ <insert id="insertSelective" parameterType="pd" >
+    insert into courses_message
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="coursesMessageId != null" >
+       parentid,
+      </if>
+      <if test="teachingClass != null" >
+        teaching_class,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="week != null" >
+        week,
+      </if>
+      <if test="weekNum != null" >
+        week_num,
+      </if>
+      <if test="section != null" >
+        section,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="limitSelect != null" >
+        limit_select,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+      <if test="creationDate != null" >
+        creation_date,
+      </if>
+      <if test="lastUpdateBy != null" >
+        last_update_by,
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date,
+      </if>
+      <if test="bz != null" >
+        bz,
+      </if>
+      <if test="cno != null" >
+        cno,
+      </if>
+      <if test="teaId != null" >
+        tea_id,
+      </if>
+      <if test=" coursesMessageId== null" >
+        parentid,
+      </if>
+      <if test="term != null" >
+        term,
+      </if>
+     
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="coursesMessageId != null" >
+       #{coursesMessageId},
+      </if>
+      <if test="teachingClass != null" >
+        #{teachingClass},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="week != null" >
+        #{week},
+      </if>
+      <if test="weekNum != null" >
+        #{weekNum},
+      </if>
+      <if test="section != null" >
+        #{section,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="limitSelect != null" >
+        #{limitSelect},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="creationDate != null" >
+        #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateBy != null" >
+        #{lastUpdateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null" >
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bz != null" >
+        #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="cno != null" >
+        #{cno,jdbcType=VARCHAR},
+      </if>
+       <if test="teaId != null" >
+        #{teaId},
+      </if>
+       <if test=" coursesMessageId== null" >
+        '#',
+      </if>
+        <if test="term != null" >
+        #{term},
+      </if>
+    </trim>
+  </insert>
+  <!-- 查询开班的详细信息 -->
+  	<select id="findByParentId" parameterType="pd" resultMap="courseMessage">
+		select  *
+		from courses_message
+		where parentid = #{coursesMessageId}
+	</select>
+	  <!-- 根据tno查询教师的教授的班级 -->
+  	<select id="listPageCMByTno" parameterType="page" resultMap="courseMessage">
+		select  teaching_class,type,limit_select,cm.cno,cm.tea_id,cm.courses_message_id,cm.score_type,cm.edit_score
+		from courses_message cm join teacher t on cm.tea_id = t.tea_id join course c on cm.cno = c.cno
+		where parentid='#' and t.tno = #{pd.tno}
+			<if test="pd.keyWord != null and pd.keyWord != ''"><!-- 关键词检索 -->
+			and cm.teaching_class like concat(concat('%', #{pd.keyWord}),'%')
+			</if>
+			<if test="pd.courseName != null and pd.courseName != ''" >
+			and c.course_name like concat(concat('%', #{pd.courseName}),'%')
+			</if>
+			<if test="pd.editScore != null and pd.editScore != ''" >
+			and cm.edit_score != 'N'
+			</if>
+		order by courses_message_id asc
+	</select>
+	
+	<update id="updateScoreType" parameterType="pd">
+	update courses_message set 
+	<if test="scoreType == 1">
+		score_type = #{scoreType},
+		regular_per = #{regularPer},
+		exam_per = #{examPer}
+	</if>
+	<if test="scoreType == 2">
+		score_type = #{scoreType}
+	</if>
+	where courses_message_id = #{coursesMessageId}
+	</update>
+	<select id="findByCoursesMessageId" parameterType="pd" resultMap="courseMessage">
+		select * from courses_message where courses_message_id = #{coursesMessageId}
+	</select>
+	<update id="updateEditScore">
+		update courses_message set edit_score = 'N' where courses_message_id = #{coursesMessageId}
+	</update>
+	
+	<!-- 根据tno查询教师的课程表 -->
+  	<select id="listPageCMByTno2" parameterType="page" resultType="pd">
+		select c.course_name courseName,cm.week week,cm.week_num weekNum, cm.section section,cm.address address
+		from courses_message cm join teacher t on cm.tea_id = t.tea_id join course c on cm.cno = c.cno
+		where parentid!='#' and t.tno = #{pd.tno}
+			<if test="pd.term != null and pd.term != ''">
+			and cm.term = #{pd.term}
+			</if>
+			<if test="pd.week != null and pd.week != ''" >
+			and cm.week = #{pd.week}
+			</if>
+		order by cm.week_num, section asc
+	</select>
+	<!-- 根据sno查询学生的课程表 -->
+  	<select id="listPageCMBySno" parameterType="page" resultType="pd">
+		select c.course_name courseName,cm.week week,cm.week_num weekNum, cm.section section,cm.address address
+		from courses_message cm 
+		join course c on cm.cno = c.cno
+		where cm.parentid in(select sc.courses_message_id FROM score sc join stu s on sc.sno = s.sno where s.sno = #{pd.sno})
+			<if test="pd.term != null and pd.term != ''">
+			and cm.term = #{pd.term}
+			</if>
+			<if test="pd.week != null and pd.week != ''" >
+			and cm.week = #{pd.week}
+			</if>
+		order by cm.week_num, section asc
+	</select>
+</mapper>

@@ -1,0 +1,46 @@
+.test{
+	border: 1px solid red;
+	
+	
+}
+
+.m_1{
+	float: left;
+	/* background-image: url("https://4.url.cn/zc/v3/img/01-3.jpg"); */
+	margin-top: 10%;
+	margin-left: 10%;
+	width: 500px;
+	height: 300px;
+	position: relative;
+	/*background-image: url(../image/login.jpg);
+	border-image-repeat: repeat;*/
+	
+	
+}
+
+.m_3{
+	float:right;
+}
+
+.m_2{
+	float: left;
+	background-color: bule;
+	margin-top: 8%;
+	margin-left: 20%;
+	width: auto;
+	position: relative;
+}
+.m_table{	
+	
+	border: 1px solid red;	
+}
+.form-group{
+	margin-top: 10px
+}
+
+body{
+	background-color: #B1C9E0;
+}
+
+
+

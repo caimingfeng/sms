@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="TeamMapper" >
+  <resultMap id="teamMap" type="com.sms.entity.Team" >
+    <id column="class_id" property="classId" jdbcType="INTEGER" />
+    <result column="grade" property="grade" jdbcType="VARCHAR" />
+    <result column="class_number" property="classNumber" jdbcType="VARCHAR" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="creation_date" property="creationDate" jdbcType="TIMESTAMP" />
+    <result column="last_update_by" property="lastUpdateBy" jdbcType="VARCHAR" />
+    <result column="last_update_date" property="lastUpdateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    class_id, grade, class_number, created_by, creation_date, last_update_by, last_update_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="teamMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from team
+    where class_id = #{classId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from team
+    where class_id = #{classId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sms.entity.Team" >
+    insert into team (class_id, grade, class_number, 
+      created_by, creation_date, last_update_by, 
+      last_update_date)
+    values (#{classId,jdbcType=INTEGER}, #{grade,jdbcType=VARCHAR}, #{classNumber,jdbcType=VARCHAR}, 
+      #{createdBy,jdbcType=VARCHAR}, #{creationDate,jdbcType=TIMESTAMP}, #{lastUpdateBy,jdbcType=VARCHAR}, 
+      #{lastUpdateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sms.entity.Team" >
+    insert into team
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="classId != null" >
+        class_id,
+      </if>
+      <if test="grade != null" >
+        grade,
+      </if>
+      <if test="classNumber != null" >
+        class_number,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+      <if test="creationDate != null" >
+        creation_date,
+      </if>
+      <if test="lastUpdateBy != null" >
+        last_update_by,
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="classId != null" >
+        0,
+      </if>
+      <if test="grade != null" >
+        #{grade},
+      </if>
+      <if test="classNumber != null" >
+        #{classNumber},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy},
+      </if>
+      <if test="creationDate != null" >
+        #{creationDate},
+      </if>
+      <if test="lastUpdateBy != null" >
+        #{lastUpdateBy},
+      </if>
+      <if test="lastUpdateDate != null" >
+        #{lastUpdateDate},
+      </if>
+    </trim>
+  </insert>
+ <!--  验证年级和班级是否匹配 -->
+  <select id="validateTeam" parameterType="pd" resultType="Integer">
+  	select class_id from team where class_number= #{classNumber} and grade= #{grade}
+  </select>
+
+</mapper>

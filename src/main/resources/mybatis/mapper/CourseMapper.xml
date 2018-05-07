@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="CourseMapper">
+	<resultMap id="courseResultMap" type="com.sms.entity.Course">
+		<id column="cno" property="cno" jdbcType="VARCHAR" />
+		<result column="course_name" property="courseName" jdbcType="VARCHAR" />
+		<result column="period" property="period" jdbcType="INTEGER" />
+		<result column="credit" property="credit" jdbcType="DOUBLE" />
+		<result column="introduction" property="introduction" jdbcType="VARCHAR" />
+		<result column="category_id" property="categoryId" jdbcType="INTEGER" />
+		<result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+		<result column="creation_date" property="creationDate"
+			jdbcType="TIMESTAMP" />
+		<result column="last_update_by" property="lastUpdateBy"
+			jdbcType="VARCHAR" />
+		<result column="last_update_date" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" />
+		<result column="bz" property="bz" jdbcType="VARCHAR" />
+		<result column="state" property="state" jdbcType="INTEGER" />
+		<result column="exist" property="exist" jdbcType="INTEGER" />
+		<result column="open" property="open" jdbcType="INTEGER" />
+		<association property="category" column="category_id" select="CourseCategoryMapper.findBycategoryId"></association>
+	</resultMap>
+	<sql id="Base_Column_List">
+		cno, course_name, period, credit, introduction, category_id, created_by,
+		creation_date,
+		last_update_by, last_update_date, bz, state, exist
+	</sql>
+	<select id="findAll" resultMap="courseResultMap">
+		select cno,course_name
+		from course
+	</select>
+	<select id="findByCno" resultMap="courseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from course
+		where cno = #{cno,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByCno" parameterType="java.lang.String">
+		delete from course
+		where cno = #{cno,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="insert" parameterType="pd">
+		insert into course
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="cno != null">
+				cno,
+			</if>
+			<if test="courseName != null">
+				course_name,
+			</if>
+			<if test="period != null">
+				period,
+			</if>
+			<if test="credit != null">
+				credit,
+			</if>
+			<if test="introduction != null">
+				introduction,
+			</if>
+			<if test="categoryId != null">
+				category_id,
+			</if>
+			<if test="createdBy != null">
+				created_by,
+			</if>
+			<if test="creationDate != null">
+				creation_date,
+			</if>
+			<if test="lastUpdateBy != null">
+				last_update_by,
+			</if>
+			<if test="lastUpdateDate != null">
+				last_update_date,
+			</if>
+			<if test="bz != null">
+				bz,
+			</if>
+			<if test="state != null">
+				state,
+			</if>
+			<if test="exist != null">
+				exist,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="cno != null">
+				#{cno,jdbcType=VARCHAR},
+			</if>
+			<if test="courseName != null">
+				#{courseName,jdbcType=VARCHAR},
+			</if>
+			<if test="period != null">
+				#{period},
+			</if>
+			<if test="credit != null">
+				#{credit},
+			</if>
+			<if test="introduction != null">
+				#{introduction,jdbcType=VARCHAR},
+			</if>
+			<if test="categoryId != null">
+				#{categoryId},
+			</if>
+			<if test="createdBy != null">
+				#{createdBy,jdbcType=VARCHAR},
+			</if>
+			<if test="creationDate != null">
+				#{creationDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpdateBy != null">
+				#{lastUpdateBy,jdbcType=VARCHAR},
+			</if>
+			<if test="lastUpdateDate != null">
+				#{lastUpdateDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="bz != null">
+				#{bz,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				#{state},
+			</if>
+			<if test="exist != null">
+				#{exist,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByCno" parameterType="com.sms.entity.Course">
+		update course
+		<set>
+			<if test="courseName != null and courseName !=''">
+				course_name = #{courseName,jdbcType=VARCHAR},
+			</if>
+			<if test="period != null and period !=''">
+				period = #{period},
+			</if>
+			<if test="credit != null and credit !=''">
+				credit = #{credit},
+			</if>
+			<if test="introduction != null">
+				introduction = #{introduction,jdbcType=VARCHAR},
+			</if>
+			<if test="categoryId != null and categoryId !=''">
+				category_id = #{categoryId},
+			</if>
+			<if test="lastUpdateBy != null">
+				last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+			</if>
+			<if test="lastUpdateDate != null">
+				last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="bz != null">
+				bz = #{bz,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				state = #{state},
+			</if>
+		</set>
+		where cno = #{cno,jdbcType=VARCHAR}
+	</update>
+	<!-- 条件检索课程信息 -->
+	<select id="listPageCourse" parameterType="page" resultMap="courseResultMap"
+		useCache="false">
+		select cno,course_name,credit,introduction,state,category_id
+		from course
+		where 1 = 1
+		<if test="pd.cno != null and pd.cno != ''"><!-- 关键词检索 -->
+			and cno like concat(concat('%', #{pd.cno}),'%')
+		</if>
+		<if test="pd.courseName != null and pd.courseName != ''">
+			and course_name like concat(concat('%', #{pd.courseName}),'%')
+		</if>
+		<if test="pd.state != null and pd.state != ''">
+			and state = #{pd.state}
+		</if>
+		order by cno asc
+	</select>
+	<update id="editOpen" parameterType="pd">
+	update course set open=#{open} where cno=#{cno}
+	</update>
+</mapper>

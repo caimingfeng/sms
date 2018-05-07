@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ScoreMapper" >
+  <resultMap id="scoreResultMap" type="com.sms.entity.Score" >
+    <id column="grade_id" property="gradeId" jdbcType="INTEGER" />
+    <result column="sno" property="sno" jdbcType="VARCHAR" />
+    <result column="cno" property="cno" jdbcType="VARCHAR" />
+    <result column="courses_message_id" property="coursesMessageId" jdbcType="INTEGER" />
+    <result column="regular_grade" property="regularGrade" jdbcType="VARCHAR" />
+    <result column="exam_grade" property="examGrade" jdbcType="VARCHAR" />
+    <result column="final_grade" property="finalGrade" jdbcType="VARCHAR" />
+    <result column="gpa" property="gpa" jdbcType="DOUBLE" />
+    <result column="term" property="term" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="bz" property="bz" jdbcType="VARCHAR" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="creation_date" property="creationDate" jdbcType="TIMESTAMP" />
+    <result column="last_update_by" property="lastUpdateBy" jdbcType="VARCHAR" />
+    <result column="last_update_date" property="lastUpdateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+<resultMap id="pdResultMap" type="pd" >
+    <id column="grade_id" property="gradeId"/>
+    <result column="sno" property="sno"/>
+    <result column="stu_name" property="stuName"/>
+    <result column="cno" property="cno"/>
+    <result column="course_name" property="courseName"/>
+    <result column="final_grade" property="finalGrade"/>
+    <result column="gpa" property="gpa"/>
+    <result column="period" property="period"/>
+    <result column="credit" property="credit"/>
+    <result column="category_name" property="categoryName"/>
+    <result column="state" property="state"/>
+    <result column="exam_type" property="examType"/>
+    <result column="score_type" property="scoreType"/>
+    <result column="bz" property="bz"/>
+</resultMap>
+  <sql id="Base_Column_List" >
+    grade_id, sno, cno, courses_message_id, regular_grade, exam_grade, final_grade, gpa, 
+    term, state, type, bz, created_by, creation_date, last_update_by, last_update_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="scoreResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from score
+    where grade_id = #{gradeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" >
+    delete from score
+    where grade_id = #{gradeId}
+  </delete>
+  <insert id="insertSelective" parameterType="com.sms.entity.Score" >
+    insert into score
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="gradeId != null" >
+        grade_id,
+      </if>
+      <if test="sno != null" >
+        sno,
+      </if>
+      <if test="cno != null" >
+        cno,
+      </if>
+      <if test="coursesMessageId != null" >
+        courses_message_id,
+      </if>
+      <if test="regularGrade != null" >
+        regular_grade,
+      </if>
+      <if test="examGrade != null" >
+        exam_grade,
+      </if>
+      <if test="finalGrade != null" >
+        final_grade,
+      </if>
+      <if test="gpa != null" >
+        gpa,
+      </if>
+      <if test="term != null" >
+        term,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="bz != null" >
+        bz,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+      <if test="creationDate != null" >
+        creation_date,
+      </if>
+      <if test="lastUpdateBy != null" >
+        last_update_by,
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="gradeId != null" >
+        #{gradeId,jdbcType=INTEGER},
+      </if>
+      <if test="sno != null" >
+        #{sno,jdbcType=VARCHAR},
+      </if>
+      <if test="cno != null" >
+        #{cno,jdbcType=VARCHAR},
+      </if>
+      <if test="coursesMessageId != null" >
+        #{coursesMessageId,jdbcType=INTEGER},
+      </if>
+      <if test="regularGrade != null" >
+        #{regularGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="examGrade != null" >
+        #{examGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="finalGrade != null" >
+        #{finalGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="gpa != null" >
+        #{gpa,jdbcType=DOUBLE},
+      </if>
+      <if test="term != null" >
+        #{term,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="bz != null" >
+        #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="creationDate != null" >
+        #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateBy != null" >
+        #{lastUpdateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null" >
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sms.entity.Score" >
+    update score
+    <set >
+      <if test="sno != null" >
+        sno = #{sno,jdbcType=VARCHAR},
+      </if>
+      <if test="cno != null" >
+        cno = #{cno,jdbcType=VARCHAR},
+      </if>
+      <if test="coursesMessageId != null" >
+        courses_message_id = #{coursesMessageId,jdbcType=INTEGER},
+      </if>
+      <if test="regularGrade != null" >
+        regular_grade = #{regularGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="examGrade != null" >
+        exam_grade = #{examGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="finalGrade != null" >
+        final_grade = #{finalGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="gpa != null" >
+        gpa = #{gpa,jdbcType=DOUBLE},
+      </if>
+      <if test="term != null" >
+        term = #{term,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="bz != null" >
+        bz = #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="creationDate != null" >
+        creation_date = #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateBy != null" >
+        last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where grade_id = #{gradeId,jdbcType=INTEGER}
+  </update>
+<!-- 根据教学班id查询学生信息 -->
+ <select id="scorelistPage" parameterType="page" resultType="pd" useCache="false">
+		select s.sno sno,s.stu_name stuName,m.department department, m.major_name majorName,t.grade grade,t.class_number classNumber,
+		sc.grade_id gradeId
+		from stu s join major_team mc on s.major_class_id = mc.major_class_id
+		join major m on mc.major_id = m.major_id 
+		join team t on mc.class_id = t.class_id
+		join score sc on sc.sno = s.sno
+		where courses_message_id = #{pd.coursesMessageId} 
+		<if test='pd.majorName!=null and pd.majorName!=""'>
+		and m.major_name like concat(concat('%', #{pd.majorName}),'%')
+		</if>
+		<if test='pd.grade!=null and pd.grade!=""'>
+		and t.grade like concat(concat('%', #{pd.grade}),'%')
+		</if>
+		<if test='pd.classNumber!=null and pd.classNumber!=""'>
+		and t.class_number like concat(concat('%', #{pd.classNumber}),'%')
+		</if>
+		<if test='pd.sno!=null and pd.sno!=""'>
+		and sc.sno like concat(concat('%', #{pd.sno}),'%')
+		</if>
+		order by sc.sno asc
+	</select>
+  <select id="findBySnoAndCoursesMessageId" parameterType="pd" resultType="Integer">
+    select count(*)
+    from score
+    where sno = #{sno} and courses_message_id = #{coursesMessageId} 
+  </select>
+  <select id="listPageStudentByCoursesMessageId" parameterType="page" resultType="pd">
+    select sc.exam_grade examGrade,sc.regular_grade regularGrade,s.sno sno,s.stu_name stuName,sc.grade_id gradeId,
+    sc.final_grade finalGrade,cm.score_type scoreType
+    from score sc join stu s on sc.sno = s.sno join courses_message cm on sc.courses_message_id = cm.courses_message_id
+    where sc.courses_message_id = #{pd.coursesMessageId} 
+    <if test="pd.sno != null and pd.sno !=''">
+    	and s.sno like concat(concat('%', #{pd.sno}),'%')
+    </if>
+    order by s.sno asc
+  </select>
+  
+  <update id="saveScore" parameterType="pd">
+  	update score set 
+  	<if test="finalGrade!=null">
+  	final_grade = #{finalGrade}
+  	</if>
+  	<if test="regularGrade!=null">
+  	regular_grade = #{regularGrade}
+  	</if>
+  	<if test="examGrade!=null">
+  	exam_grade = #{examGrade}
+  	</if>
+  	where grade_id = #{gradeId}
+  </update>
+  
+  <select id="findByCoursesMessageId" parameterType="pd" resultMap="scoreResultMap">
+  	select * from score  where courses_message_id = #{coursesMessageId} 
+  </select>
+
+<update id="editFinalGrade" parameterType="score">
+	update score set final_grade = #{finalGrade} ,gpa=#{gpa} where grade_id = #{gradeId}
+</update>
+<update id="editGpa" parameterType="score">
+	update score set gpa=#{gpa} where grade_id = #{gradeId}
+</update>
+
+<!-- <resultMap id="pdResultMap" type="pd" >
+    <id column="grade_id" property="gradeId"/>
+    <result column="sno" property="sno"/>
+    <result column="stu_name" property="stuName"/>
+    <result column="cno" property="cno"/>
+    <result column="course_name" property="courseName"/>
+    <result column="final_grade" property="finalGrade"/>
+    <result column="gpa" property="gpa"/>
+    <result column="period" property="period"/>
+    <result column="credit" property="credit"/>
+    <result column="category_name" property="categoryName"/>
+    <result column="state" property="state"/>
+    <result column="exam_type" property="examType"/>
+    <result column="score_type" property="scoreType"/>
+    <result column="bz" property="bz"/>
+</resultMap> -->
+
+<select id="listPageScoreBySno" parameterType="page" resultMap="pdResultMap">
+    select sc.grade_id,s.sno,s.stu_name,c.cno,c.course_name,sc.final_grade,sc.gpa,c.period,c.credit,cc.category_name,
+    	c.state,cm.score_type,sc.bz
+    from score sc 
+    join stu s on sc.sno = s.sno 
+    join courses_message cm on sc.courses_message_id = cm.courses_message_id
+    join course c on cm.cno = c.cno
+    left join courses_category cc on cc.category_id = c.category_id 
+    where s.sno = #{pd.sno} and cm.edit_score = 'N'
+    <if test="pd.term != null and pd.term !='' and pd.term != '全部'">
+    	and sc.term = #{pd.term}
+    </if>
+    order by sc.creation_date asc
+  </select>
+  
+<select id="findByGradeId" parameterType="pd" resultMap="scoreResultMap">
+    select regular_grade,exam_grade,final_grade
+    from score
+    where grade_id = #{gradeId}
+</select>
+
+<select id="findBySno" parameterType="pd" resultType="pd">
+    select sc.gpa gap,c.credit credit,gpa*credit count
+    from score sc join stu s on s.sno = sc.sno
+    join courses_message cm on sc.courses_message_id = cm.courses_message_id
+    join course c on cm.cno = c.cno
+    where s.sno = #{sno} and cm.edit_score = 'N' 
+    <if test="term != '全部'">
+    and sc.term = #{term}
+    </if>
+    
+</select>
+
+</mapper>

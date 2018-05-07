@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="UserMapper">
+	<resultMap id="BaseResultMap" type="pd">
+		<id column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="account" property="account" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="role_id" property="roleId" jdbcType="INTEGER" />
+		<result column="current_login" property="currentLogin"
+			jdbcType="TIMESTAMP" />
+		<result column="ip" property="ip" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="skin" property="skin" jdbcType="VARCHAR" />
+		<result column="exist" property="exist" jdbcType="INTEGER" />
+		<result column="bz" property="bz" jdbcType="VARCHAR" />
+		<result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+		<result column="creation_date" property="creationDate"
+			jdbcType="TIMESTAMP" />
+		<result column="last_update_by" property="lastUpdateBy"
+			jdbcType="VARCHAR" />
+		<result column="last_update_date" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		user_id, account, password, role_id, current_login, ip, status, skin, exist,
+		bz,
+		created_by, creation_date, last_update_by, last_update_date
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from sys_user
+		where user_id = #{userId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from sys_user
+		where user_id = #{userId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.sms.entity.User">
+		insert into sys_user (user_id, account, password,
+		role_id, current_login, ip,
+		status, skin, exist,
+		bz, created_by, creation_date,
+		last_update_by, last_update_date)
+		values (#{userId,jdbcType=INTEGER}, #{account,jdbcType=VARCHAR},
+		#{password,jdbcType=VARCHAR},
+		#{roleId,jdbcType=INTEGER}, #{currentLogin,jdbcType=TIMESTAMP}, #{ip,jdbcType=VARCHAR},
+		#{status,jdbcType=INTEGER}, #{skin,jdbcType=VARCHAR},
+		#{exist,jdbcType=INTEGER},
+		#{bz,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, #{creationDate,jdbcType=TIMESTAMP},
+		#{lastUpdateBy,jdbcType=VARCHAR},
+		#{lastUpdateDate,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" parameterType="pd">
+		insert into sys_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="account != null">
+				account,
+			</if>
+			<if test="password != null">
+				password,
+			</if>
+			<if test="roleId != null">
+				role_id,
+			</if>
+			<if test="currentLogin != null">
+				current_login,
+			</if>
+			<if test="ip != null">
+				ip,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="skin != null">
+				skin,
+			</if>
+			<if test="exist != null">
+				exist,
+			</if>
+			<if test="bz != null">
+				bz,
+			</if>
+			<if test="createdBy != null">
+				created_by,
+			</if>
+			<if test="creationDate != null">
+				creation_date,
+			</if>
+			<if test="lastUpdateBy != null">
+				last_update_by,
+			</if>
+			<if test="lastUpdateDate != null">
+				last_update_date,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="account != null">
+				#{account,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				#{password,jdbcType=VARCHAR},
+			</if>
+			<if test="roleId != null">
+				#{roleId,jdbcType=INTEGER},
+			</if>
+			<if test="currentLogin != null">
+				#{currentLogin,jdbcType=TIMESTAMP},
+			</if>
+			<if test="ip != null">
+				#{ip,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="skin != null">
+				#{skin,jdbcType=VARCHAR},
+			</if>
+			<if test="exist != null">
+				#{exist,jdbcType=INTEGER},
+			</if>
+			<if test="bz != null">
+				#{bz,jdbcType=VARCHAR},
+			</if>
+			<if test="createdBy != null">
+				#{createdBy,jdbcType=VARCHAR},
+			</if>
+			<if test="creationDate != null">
+				#{creationDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpdateBy != null">
+				#{lastUpdateBy,jdbcType=VARCHAR},
+			</if>
+			<if test="lastUpdateDate != null">
+				#{lastUpdateDate,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.sms.entity.User">
+		update sys_user
+		<set>
+			<if test="account != null">
+				account = #{account,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				password = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="roleId != null">
+				role_id = #{roleId,jdbcType=INTEGER},
+			</if>
+			<if test="currentLogin != null">
+				current_login = #{currentLogin,jdbcType=TIMESTAMP},
+			</if>
+			<if test="ip != null">
+				ip = #{ip,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="skin != null">
+				skin = #{skin,jdbcType=VARCHAR},
+			</if>
+			<if test="exist != null">
+				exist = #{exist,jdbcType=INTEGER},
+			</if>
+			<if test="bz != null">
+				bz = #{bz,jdbcType=VARCHAR},
+			</if>
+			<if test="createdBy != null">
+				created_by = #{createdBy,jdbcType=VARCHAR},
+			</if>
+			<if test="creationDate != null">
+				creation_date = #{creationDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpdateBy != null">
+				last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+			</if>
+			<if test="lastUpdateDate != null">
+				last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where user_id = #{userId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.sms.entity.User">
+		update sys_user
+		set account = #{account,jdbcType=VARCHAR},
+		password = #{password,jdbcType=VARCHAR},
+		role_id = #{roleId,jdbcType=INTEGER},
+		current_login = #{currentLogin,jdbcType=TIMESTAMP},
+		ip = #{ip,jdbcType=VARCHAR},
+		status = #{status,jdbcType=INTEGER},
+		skin = #{skin,jdbcType=VARCHAR},
+		exist = #{exist,jdbcType=INTEGER},
+		bz = #{bz,jdbcType=VARCHAR},
+		created_by = #{createdBy,jdbcType=VARCHAR},
+		creation_date = #{creationDate,jdbcType=TIMESTAMP},
+		last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+		last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP}
+		where user_id = #{userId,jdbcType=INTEGER}
+	</update>
+</mapper>

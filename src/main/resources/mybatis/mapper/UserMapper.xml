@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="UserMapper">
+	<resultMap id="userResultMap" type="user">
+		<id column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="account" property="account" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="role_id" property="roleId" jdbcType="INTEGER" />
+		<result column="last_login" property="lastLogin" jdbcType="TIMESTAMP" />
+		<result column="ip" property="ip" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="skin" property="skin" jdbcType="VARCHAR" />
+		<result column="exist" property="exist" jdbcType="INTEGER" />
+		<result column="bz" property="bz" jdbcType="VARCHAR" />
+		<result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+		<result column="creation_date" property="creationDate"
+			jdbcType="TIMESTAMP" />
+		<result column="last_update_by" property="lastUpdateBy"
+			jdbcType="VARCHAR" />
+		<result column="last_update_date" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<resultMap type="pd" id="pdUser">
+		<id column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="account" property="account" jdbcType="VARCHAR" />
+		<result column="skin" property="SKIN" jdbcType="VARCHAR" />
+		<result column="role_id" property="roleId" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		user_id, account, password, role_id, last_login, ip,
+		status, skin, exist,
+		bz,
+		created_by, creation_date, last_update_by,
+		last_update_date
+	</sql>
+	<select id="findByAccount" resultMap="userResultMap"
+		parameterType="String">
+		select
+		<include refid="Base_Column_List" />
+		from sys_user
+		where account = #{account}
+	</select>
+	<!-- 删除用户 -->
+	<delete id="deleteU" parameterType="pd">
+		update sys_user set exist = 0
+		where user_id = #{userId}
+	</delete>
+	<insert id="insert" parameterType="user">
+		insert into sys_user (user_id,
+		account, password,
+		role_id, last_login, ip,
+		status, skin, exist,
+		bz,
+		created_by, creation_date,
+		last_update_by, last_update_date)
+		values
+		(#{userId,jdbcType=INTEGER}, #{account,jdbcType=VARCHAR},
+		#{password,jdbcType=VARCHAR},
+		#{roleId,jdbcType=INTEGER},
+		#{lastLogin,jdbcType=TIMESTAMP}, #{ip,jdbcType=VARCHAR},
+		#{status,jdbcType=INTEGER}, #{skin,jdbcType=VARCHAR},
+		#{exist,jdbcType=INTEGER},
+		#{bz,jdbcType=VARCHAR},
+		#{createdBy,jdbcType=VARCHAR}, #{creationDate,jdbcType=TIMESTAMP},
+		#{lastUpdateBy,jdbcType=VARCHAR},
+		#{lastUpdateDate,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" parameterType="pd">
+		insert into sys_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="account != null">
+				account,
+			</if>
+			<if test="password != null">
+				password,
+			</if>
+			<if test="roleId != null">
+				role_id,
+			</if>
+			<if test="lastLogin != null">
+				last_login,
+			</if>
+			<if test="ip != null">
+				ip,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="skin != null">
+				skin,
+			</if>
+			<if test="exist != null">
+				exist,
+			</if>
+			<if test="bz != null">
+				bz,
+			</if>
+			<if test="createdBy != null">
+				created_by,
+			</if>
+			<if test="creationDate != null">
+				creation_date,
+			</if>
+			<if test="lastUpdateBy != null">
+				last_update_by,
+			</if>
+			<if test="lastUpdateDate != null">
+				last_update_date,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				0,
+			</if>
+			<if test="account != null">
+				#{account,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				#{password,jdbcType=VARCHAR},
+			</if>
+			<if test="roleId != null">
+				#{roleId,jdbcType=INTEGER},
+			</if>
+			<if test="lastLogin != null">
+				#{lastLogin,jdbcType=TIMESTAMP},
+			</if>
+			<if test="ip != null">
+				#{ip,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="skin != null">
+				#{skin,jdbcType=VARCHAR},
+			</if>
+			<if test="exist != null">
+				#{exist,jdbcType=INTEGER},
+			</if>
+			<if test="bz != null">
+				#{bz,jdbcType=VARCHAR},
+			</if>
+			<if test="createdBy != null">
+				#{createdBy,jdbcType=VARCHAR},
+			</if>
+			<if test="creationDate != null">
+				#{creationDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpdateBy != null">
+				#{lastUpdateBy,jdbcType=VARCHAR},
+			</if>
+			<if test="lastUpdateDate != null">
+				#{lastUpdateDate,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	
+	
+	<!-- 验证账号和密码 -->
+	<select id="validateUser" parameterType="pd" resultType="Integer"
+		useCache="false">
+		select count(user_id) from sys_user where account =
+		#{account} and password = #{password}
+	</select>
+	<!-- 判断账号是否有效 -->
+	<select id="isExist" parameterType="String" resultType="Integer">
+		select
+		count(user_id) from sys_user where account = #{account} and exist = 1
+	</select>
+	<!-- 判断角色是否一致 -->
+	<select id="judgRole" parameterType="pd" resultType="Integer">
+		select
+		count(user_id) from sys_user where account = #{account}  <if test="roleId != null">and role_id =
+		#{roleId}</if>
+	</select>
+	<!-- 更新用户登录信息 -->
+	<update id="updateLastLoginInfo" parameterType="pd">
+		update sys_user
+		set last_update_date = #{lastUpDate},
+		ip = #{ip},
+		last_update_by =
+		#{lastUpdateBy},
+		last_login = #{lastLogin}
+		where account = #{account}
+	</update>
+	<!-- 更新用户流水信息 -->
+	<insert id="insertFlowUser" parameterType="FlowUser">
+		insert into ull_user_login_logout_log
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="ullId != null">
+				ull_id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="token != null">
+				token,
+			</if>
+			<if test="operatingType != null">
+				operating_type,
+			</if>
+			<if test="operatingDate != null">
+				operating_date,
+			</if>
+			<if test="createdBy != null">
+				created_by,
+			</if>
+			<if test="creationDate != null">
+				creation_date,
+			</if>
+			<if test="lastUpdateBy != null">
+				last_update_by,
+			</if>
+			<if test="lastUpdateDate != null">
+				last_update_date,
+			</if>
+			<if test="bz != null">
+				bz,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="ullId != null">
+				#{ullId},
+			</if>
+			<if test="userId != null">
+				#{userId},
+			</if>
+			<if test="token != null">
+				#{token},
+			</if>
+			<if test="operatingType != null">
+				#{operatingType},
+			</if>
+			<if test="operatingDate != null">
+				#{operatingDate},
+			</if>
+			<if test="createdBy != null">
+				#{createdBy},
+			</if>
+			<if test="creationDate != null">
+				#{creationDate},
+			</if>
+			<if test="lastUpdateBy != null">
+				#{lastUpdateBy},
+			</if>
+			<if test="lastUpdateDate != null">
+				#{lastUpdateDate},
+			</if>
+			<if test="bz != null">
+				#{bz},
+			</if>
+		</trim>
+	</insert>
+	<!-- 根据账号或userId查询用户信息 -->
+	<select id="findByUId" parameterType="String" resultMap="pdUser">
+		select *
+		from sys_user where user_id = #{userId} or account = #{account}
+	</select>
+	<!-- 用户列表(用户组) -->
+	<select id="userlistPage" parameterType="page" resultType="pd" useCache="false">
+		select  u.user_id userId,
+				u.account account,
+				u.role_id roleId,
+				u.ip ip,
+				u.last_login lastLogin,
+				u.exist exist,
+				r.role_name roleName,
+				r.parent_id parentId
+		from sys_user u, sys_new_role r 
+		where u.role_id = r.role_id 
+		and u.account != 'admin'
+			<if test="pd.keyWord != null and pd.keyWord != ''"><!-- 关键词检索 -->
+			and u.account like concat(concat('%', #{pd.keyWord}),'%')
+			</if>
+			<if test="pd.roleId != null and pd.roleId != ''" ><!-- 角色检索 -->
+			and u.role_id = #{pd.roleId}
+			</if>
+			<if test="pd.exist != null and pd.exist != ''"><!-- 数据有效性检索 -->
+			and u.exist = #{pd.exist}
+			</if>
+			<if test="pd.lastLoginEnd!=null and pd.lastLoginEnd!=''"><!-- 登录时间检索 -->
+			and u.last_login &lt;= #{pd.lastLoginEnd} 
+			</if>
+			<if test="pd.lastLoginStart!=null and pd.lastLoginStart!=''">
+			and u.last_login &gt;= #{pd.lastLoginStart} 
+			</if>
+		order by u.account asc
+	</select>
+	<!-- 根据userId和account查找 -->
+	<select id="findByUIdAndAccount" parameterType="String" resultType="Integer">
+		select count(user_id)
+		from sys_user where user_id != #{userId} and account = #{account}
+	</select>
+	
+	<!-- 更新用户信息 -->
+	<update id="editU" parameterType="pd">
+	update sys_user set 
+	<trim suffix="" suffixOverrides=",">
+	<if test="account != null"> account = #{account},</if>
+	<if test="password != null"> password = #{password},</if>
+	<if test="roleId != null"> role_id = #{roleId},</if>
+	<if test="lastUpdateBy != null"> last_update_by = #{lastUpdateBy},</if>
+	<if test="lastUpdateDate != null"> last_update_date = #{lastUpdateDate},</if>
+	<if test="bz != null"> bz = #{bz},</if>
+	<if test="skin != null"> skin = #{skin},</if>
+	</trim>
+	where user_id = #{userId}
+	</update>
+	
+	<!-- 批量删除用户 -->
+	<delete id="deleteAllU" parameterType="String" flushCache="false">
+		update sys_user set exist = 0, bz = 'last action is delete'
+		where user_id in
+  			 <foreach item="userId" index="index" collection="array" open="(" separator="," close=")">
+                  #{userId}
+             </foreach>
+	</delete>
+	
+	<!-- 按条件查询用户 -->
+	<select id="findByMessage" parameterType="pd" resultType="pd" useCache="false">
+		select  u.user_id userId,
+				u.account account,
+				u.role_id roleId,
+				u.ip ip,
+				u.last_login lastLogin,
+				u.exist exist,
+				r.role_name roleName,
+				u.bz bz,
+				r.parent_id parentId
+		from sys_user u, sys_new_role r 
+		where u.role_id = r.role_id 
+		and u.account != 'admin'
+			<if test="keyWord != null and keyWord != ''"><!-- 关键词检索 -->
+			and u.account like concat(concat('%', #{keyWord}),'%')
+			</if>
+			<if test="roleId != null and roleId != ''" ><!-- 角色检索 -->
+			and u.role_id = #{roleId}
+			</if>
+			<if test="exist != null and exist != ''"><!-- 数据有效性检索 -->
+			and u.exist = #{exist}
+			</if>
+			<if test="lastLoginEnd!=null and lastLoginEnd!=''"><!-- 登录时间检索 -->
+			and u.last_login &lt;= #{lastLoginEnd} 
+			</if>
+			<if test="lastLoginStart!=null and lastLoginStart!=''">
+			and u.last_login &gt;= #{lastLoginStart} 
+			</if>
+		order by u.user_id asc
+	</select>
+	
+	<!-- 验证账号是否唯一 -->
+	<select id="validateAccountUq" parameterType="pd" resultType="Integer">
+		select count(user_id)
+		from sys_user where account = #{account}
+	</select>
+		<!-- 验证账号是否唯一 -->
+	<update id="updatePw" parameterType="pd">
+		update sys_user set password = #{password} where account = #{account}
+	</update>
+</mapper>

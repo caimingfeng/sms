@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="MajorMapper">
+	<resultMap id="majorMap" type="com.sms.entity.Major">
+		<id column="major_id" property="majorId" jdbcType="INTEGER" />
+		<result column="major_code" property="majorCode" jdbcType="VARCHAR" />
+		<result column="major_name" property="majorName" jdbcType="VARCHAR" />
+		<result column="department" property="department" jdbcType="VARCHAR" />
+		<result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+		<result column="creation_date" property="creationDate"
+			jdbcType="TIMESTAMP" />
+		<result column="last_update_by" property="lastUpdateBy"
+			jdbcType="VARCHAR" />
+		<result column="last_update_date" property="lastUpdateDate"
+			jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		major_id, major_code, major_name, department, created_by, creation_date,
+		last_update_by,
+		last_update_date
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="majorMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from major
+		where major_id = #{majorId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from major
+		where major_id = #{majorId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.sms.entity.Major">
+		insert into major (major_id, major_code, major_name,
+		department, created_by, creation_date,
+		last_update_by, last_update_date)
+		values (#{majorId,jdbcType=INTEGER}, #{majorCode,jdbcType=VARCHAR},
+		#{majorName,jdbcType=VARCHAR},
+		#{department,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, #{creationDate,jdbcType=TIMESTAMP},
+		#{lastUpdateBy,jdbcType=VARCHAR},
+		#{lastUpdateDate,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" parameterType="com.sms.entity.Major">
+		insert into major
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="majorId != null">
+				major_id,
+			</if>
+			<if test="majorCode != null">
+				major_code,
+			</if>
+			<if test="majorName != null">
+				major_name,
+			</if>
+			<if test="department != null">
+				department,
+			</if>
+			<if test="createdBy != null">
+				created_by,
+			</if>
+			<if test="creationDate != null">
+				creation_date,
+			</if>
+			<if test="lastUpdateBy != null">
+				last_update_by,
+			</if>
+			<if test="lastUpdateDate != null">
+				last_update_date,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="majorId != null">
+				#{majorId,jdbcType=INTEGER},
+			</if>
+			<if test="majorCode != null">
+				#{majorCode,jdbcType=VARCHAR},
+			</if>
+			<if test="majorName != null">
+				#{majorName,jdbcType=VARCHAR},
+			</if>
+			<if test="department != null">
+				#{department,jdbcType=VARCHAR},
+			</if>
+			<if test="createdBy != null">
+				#{createdBy,jdbcType=VARCHAR},
+			</if>
+			<if test="creationDate != null">
+				#{creationDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpdateBy != null">
+				#{lastUpdateBy,jdbcType=VARCHAR},
+			</if>
+			<if test="lastUpdateDate != null">
+				#{lastUpdateDate,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.sms.entity.Major">
+		update major
+		<set>
+			<if test="majorCode != null">
+				major_code = #{majorCode,jdbcType=VARCHAR},
+			</if>
+			<if test="majorName != null">
+				major_name = #{majorName,jdbcType=VARCHAR},
+			</if>
+			<if test="department != null">
+				department = #{department,jdbcType=VARCHAR},
+			</if>
+			<if test="createdBy != null">
+				created_by = #{createdBy,jdbcType=VARCHAR},
+			</if>
+			<if test="creationDate != null">
+				creation_date = #{creationDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpdateBy != null">
+				last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+			</if>
+			<if test="lastUpdateDate != null">
+				last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where major_id = #{majorId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.sms.entity.Major">
+		update major
+		set major_code = #{majorCode,jdbcType=VARCHAR},
+		major_name = #{majorName,jdbcType=VARCHAR},
+		department = #{department,jdbcType=VARCHAR},
+		created_by = #{createdBy,jdbcType=VARCHAR},
+		creation_date = #{creationDate,jdbcType=TIMESTAMP},
+		last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+		last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP}
+		where major_id = #{majorId,jdbcType=INTEGER}
+	</update>
+	
+	<!-- 通过专业名验证专业 -->
+	<select id="validateMajor" parameterType="String" resultType="Integer">
+		select major_id from major where major_name = #{majorName}
+	</select>
+	
+	<!-- 查询所有专业 -->
+	<select id="findAll" parameterType="String" resultMap="majorMap">
+		select * from major
+	</select>
+	
+</mapper>

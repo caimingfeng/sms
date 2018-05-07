@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ScoreMapper" >
+  <resultMap id="BaseResultMap" type="com.sms.entity.Score" >
+    <id column="grade_id" property="gradeId" jdbcType="INTEGER" />
+    <result column="sno" property="sno" jdbcType="VARCHAR" />
+    <result column="cno" property="cno" jdbcType="VARCHAR" />
+    <result column="courses_message_id" property="coursesMessageId" jdbcType="INTEGER" />
+    <result column="regular_grade" property="regularGrade" jdbcType="VARCHAR" />
+    <result column="exam_grade" property="examGrade" jdbcType="VARCHAR" />
+    <result column="final_grade" property="finalGrade" jdbcType="VARCHAR" />
+    <result column="gpa" property="gpa" jdbcType="DOUBLE" />
+    <result column="term" property="term" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="bz" property="bz" jdbcType="VARCHAR" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="creation_date" property="creationDate" jdbcType="TIMESTAMP" />
+    <result column="last_update_by" property="lastUpdateBy" jdbcType="VARCHAR" />
+    <result column="last_update_date" property="lastUpdateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    grade_id, sno, cno, courses_message_id, regular_grade, exam_grade, final_grade, gpa, 
+    term, state, type, bz, created_by, creation_date, last_update_by, last_update_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from score
+    where grade_id = #{gradeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from score
+    where grade_id = #{gradeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sms.entity.Score" >
+    insert into score (grade_id, sno, cno, 
+      courses_message_id, regular_grade, exam_grade, 
+      final_grade, gpa, term, 
+      state, type, bz, created_by, 
+      creation_date, last_update_by, last_update_date
+      )
+    values (#{gradeId,jdbcType=INTEGER}, #{sno,jdbcType=VARCHAR}, #{cno,jdbcType=VARCHAR}, 
+      #{coursesMessageId,jdbcType=INTEGER}, #{regularGrade,jdbcType=VARCHAR}, #{examGrade,jdbcType=VARCHAR}, 
+      #{finalGrade,jdbcType=VARCHAR}, #{gpa,jdbcType=DOUBLE}, #{term,jdbcType=VARCHAR}, 
+      #{state,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{bz,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, 
+      #{creationDate,jdbcType=TIMESTAMP}, #{lastUpdateBy,jdbcType=VARCHAR}, #{lastUpdateDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.sms.entity.Score" >
+    insert into score
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="gradeId != null" >
+        grade_id,
+      </if>
+      <if test="sno != null" >
+        sno,
+      </if>
+      <if test="cno != null" >
+        cno,
+      </if>
+      <if test="coursesMessageId != null" >
+        courses_message_id,
+      </if>
+      <if test="regularGrade != null" >
+        regular_grade,
+      </if>
+      <if test="examGrade != null" >
+        exam_grade,
+      </if>
+      <if test="finalGrade != null" >
+        final_grade,
+      </if>
+      <if test="gpa != null" >
+        gpa,
+      </if>
+      <if test="term != null" >
+        term,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="bz != null" >
+        bz,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+      <if test="creationDate != null" >
+        creation_date,
+      </if>
+      <if test="lastUpdateBy != null" >
+        last_update_by,
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="gradeId != null" >
+        #{gradeId,jdbcType=INTEGER},
+      </if>
+      <if test="sno != null" >
+        #{sno,jdbcType=VARCHAR},
+      </if>
+      <if test="cno != null" >
+        #{cno,jdbcType=VARCHAR},
+      </if>
+      <if test="coursesMessageId != null" >
+        #{coursesMessageId,jdbcType=INTEGER},
+      </if>
+      <if test="regularGrade != null" >
+        #{regularGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="examGrade != null" >
+        #{examGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="finalGrade != null" >
+        #{finalGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="gpa != null" >
+        #{gpa,jdbcType=DOUBLE},
+      </if>
+      <if test="term != null" >
+        #{term,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="bz != null" >
+        #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="creationDate != null" >
+        #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateBy != null" >
+        #{lastUpdateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null" >
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sms.entity.Score" >
+    update score
+    <set >
+      <if test="sno != null" >
+        sno = #{sno,jdbcType=VARCHAR},
+      </if>
+      <if test="cno != null" >
+        cno = #{cno,jdbcType=VARCHAR},
+      </if>
+      <if test="coursesMessageId != null" >
+        courses_message_id = #{coursesMessageId,jdbcType=INTEGER},
+      </if>
+      <if test="regularGrade != null" >
+        regular_grade = #{regularGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="examGrade != null" >
+        exam_grade = #{examGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="finalGrade != null" >
+        final_grade = #{finalGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="gpa != null" >
+        gpa = #{gpa,jdbcType=DOUBLE},
+      </if>
+      <if test="term != null" >
+        term = #{term,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="bz != null" >
+        bz = #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="creationDate != null" >
+        creation_date = #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateBy != null" >
+        last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where grade_id = #{gradeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sms.entity.Score" >
+    update score
+    set sno = #{sno,jdbcType=VARCHAR},
+      cno = #{cno,jdbcType=VARCHAR},
+      courses_message_id = #{coursesMessageId,jdbcType=INTEGER},
+      regular_grade = #{regularGrade,jdbcType=VARCHAR},
+      exam_grade = #{examGrade,jdbcType=VARCHAR},
+      final_grade = #{finalGrade,jdbcType=VARCHAR},
+      gpa = #{gpa,jdbcType=DOUBLE},
+      term = #{term,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      bz = #{bz,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      creation_date = #{creationDate,jdbcType=TIMESTAMP},
+      last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+      last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP}
+    where grade_id = #{gradeId,jdbcType=INTEGER}
+  </update>
+</mapper>

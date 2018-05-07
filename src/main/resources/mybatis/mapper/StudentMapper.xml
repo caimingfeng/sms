@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="StudentMapper" >
+  <resultMap id="studentResultMap" type="com.sms.entity.Student" >
+    <id column="stu_id" property="stuId" jdbcType="INTEGER" />
+    <result column="sno" property="sno" jdbcType="VARCHAR" />
+    <result column="stu_name" property="stuName" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="CHAR" />
+    <result column="birth" property="birth" jdbcType="TIMESTAMP" />
+    <result column="major_class_id" property="majorClassId" jdbcType="INTEGER" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="postal_code" property="postalCode" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="creation_date" property="creationDate" jdbcType="TIMESTAMP" />
+    <result column="last_update_by" property="lastUpdateBy" jdbcType="VARCHAR" />
+    <result column="last_update_date" property="lastUpdateDate" jdbcType="TIMESTAMP" />
+    <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    stu_id, sno, stu_name, sex, birth, major_class_id, address, postal_code, phone, email, 
+    created_by, creation_date, last_update_by, last_update_date, id_card
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="studentResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from stu
+    where stu_id = #{stuId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from stu
+    where stu_id = #{stuId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sms.entity.Student" >
+    insert into stu (stu_id, sno, stu_name, 
+      sex, birth, major_class_id, 
+      address, postal_code, phone, 
+      email, created_by, creation_date, 
+      last_update_by, last_update_date, id_card
+      )
+    values (#{stuId,jdbcType=INTEGER}, #{sno,jdbcType=VARCHAR}, #{stuName,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=CHAR}, #{birth,jdbcType=TIMESTAMP}, #{majorClassId,jdbcType=INTEGER}, 
+      #{address,jdbcType=VARCHAR}, #{postalCode,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, #{creationDate,jdbcType=TIMESTAMP}, 
+      #{lastUpdateBy,jdbcType=VARCHAR}, #{lastUpdateDate,jdbcType=TIMESTAMP}, #{idCard,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.sms.entity.Student" >
+    insert into stu
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="stuId != null" >
+        stu_id,
+      </if>
+      <if test="sno != null" >
+        sno,
+      </if>
+      <if test="stuName != null" >
+        stu_name,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="birth != null" >
+        birth,
+      </if>
+      <if test="majorClassId != null" >
+        major_class_id,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="postalCode != null" >
+        postal_code,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+      <if test="creationDate != null" >
+        creation_date,
+      </if>
+      <if test="lastUpdateBy != null" >
+        last_update_by,
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date,
+      </if>
+      <if test="idCard != null" >
+        id_card,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="stuId != null" >
+        #{stuId,jdbcType=INTEGER},
+      </if>
+      <if test="sno != null" >
+        #{sno,jdbcType=VARCHAR},
+      </if>
+      <if test="stuName != null" >
+        #{stuName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=CHAR},
+      </if>
+      <if test="birth != null" >
+        #{birth,jdbcType=TIMESTAMP},
+      </if>
+      <if test="majorClassId != null" >
+        #{majorClassId,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="postalCode != null" >
+        #{postalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="creationDate != null" >
+        #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateBy != null" >
+        #{lastUpdateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null" >
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="idCard != null" >
+        #{idCard,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateBySno" parameterType="pd" >
+    update stu
+    <set >
+      <if test="stuName != null" >
+        stu_name = #{stuName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=CHAR},
+      </if>
+      <if test="birth != null" >
+        birth = #{birth,jdbcType=TIMESTAMP},
+      </if>
+      <if test="majorClassId != null" >
+        major_class_id = #{majorClassId,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="postalCode != null" >
+        postal_code = #{postalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="creationDate != null" >
+        creation_date = #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateBy != null" >
+        last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="idCard != null" >
+        id_card = #{idCard,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where sno = #{sno}
+  </update>
+  
+  <!--   根据学号查询学生姓名 -->
+<select id="findStuNameBySno" resultMap="studentResultMap">
+	select stu_name from stu where sno = #{sno}
+</select>
+
+<!--   验证学号是否有重复 -->
+ <select id="validateSnoUq" parameterType="String" resultType="Integer">
+    select count(stu_id)
+    from stu
+    where sno = #{sno}
+  </select>
+  
+  <select id="studentlistPage" parameterType="page" resultType="pd" useCache="false">
+		select s.sno sno,s.stu_name stuName,m.department department, m.major_name majorName,t.grade grade,t.class_number classNumber
+		from stu s join major_team mc on s.major_class_id = mc.major_class_id
+		join major m on mc.major_id = m.major_id 
+		join team t on mc.class_id = t.class_id
+		where 1 = 1
+		<if test='pd.majorName!=null and pd.majorName!=""'>
+		and m.major_name like concat(concat('%', #{pd.majorName}),'%')
+		</if>
+		<if test='pd.grade!=null and pd.grade!=""'>
+		and t.grade like concat(concat('%', #{pd.grade}),'%')
+		</if>
+		<if test='pd.classNumber!=null and pd.classNumber!=""'>
+		and t.class_number like concat(concat('%', #{pd.classNumber}),'%')
+		</if>
+		<if test='pd.sno!=null and pd.sno!=""'>
+		and s.sno like concat(concat('%', #{pd.sno}),'%')
+		</if>
+		order by s.sno asc
+	</select>
+	
+	<select id="findBySno" parameterType="pd" resultType="pd">
+		select s.sno sno,s.stu_name stuName,s.sex sex,s.birth birth,s.address address,s.postal_code postalCode,
+			s.phone phone,s.email email,s.id_card idCard,m.major_name majorName,m.department department,
+			t.grade grade,t.class_number classNumber
+		from stu s join major_team mt on s.major_class_id = mt.major_class_id
+		join major m on m.major_id = mt.major_id
+		join team t on t.class_id = mt.class_id
+		where s.sno = #{sno}
+	</select>
+	
+</mapper>
